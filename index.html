@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexify - Building the Future</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #00f2ff; /* Neon Cyan */
+            --secondary: #0078ff; /* Tech Blue */
+            --accent: #ff9800; /* For Gyansetu */
+            --dark-bg: #0a0f1c;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --glass: rgba(15, 23, 42, 0.6);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 120, 255, 0.1) 0%, transparent 20%);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+        
+        p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* --- HERO SECTION (16:9 Banner Style) --- */
+        .hero-wrapper {
+            margin-top: 80px; /* Space for fixed nav */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0 5%; /* Side padding */
+        }
+
+        .hero-banner {
+            width: 100%;
+            max-width: 1400px;
+            aspect-ratio: 16/9;
+            max-height: 80vh; /* Don't be too tall on huge screens */
+            background: url('banner.jpg') no-repeat center center/cover;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* Dark Overlay */
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, #0a0f1c 0%, rgba(0,0,0,0.4) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            animation: slideUp 1s ease-out;
+        }
+
+        .main-logo {
+            width: 120px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.4));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--primary);
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            padding: 12px 35px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 20px rgba(0, 120, 255, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+        }
+
+        /* --- SECTIONS COMMON --- */
+        section {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: linear-gradient(90deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .divider {
+            height: 4px;
+            width: 60px;
+            background: var(--primary);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ABOUT & CARDS --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .glass-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* --- FOUNDER SECTION --- */
+        .founder-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .founder-img-wrapper {
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .founder-img {
+            width: 280px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            box-shadow: 10px 10px 0px rgba(0, 242, 255, 0.1);
+        }
+
+        .founder-info h3 {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .founder-role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- GYANSETU PROJECT --- */
+        .project-card {
+            background: radial-gradient(circle at top right, rgba(255, 152, 0, 0.1), transparent), var(--card-bg);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            display: flex;
+            flex-direction: column; /* Mobile first stack */
+            align-items: center;
+            text-align: center;
+        }
+
+        @media(min-width: 768px) {
+            .project-card {
+                flex-direction: row;
+                text-align: left;
+                padding: 50px;
+                gap: 40px;
+            }
+        }
+
+        .project-logo {
+            width: 150px;
+            filter: drop-shadow(0 0 10px rgba(255, 152, 0, 0.5));
+        }
+
+        /* --- CONTACT & SOCIALS --- */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: #fff;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .social-btn i { font-size: 1.5rem; }
+
+        .social-btn.yt:hover { background: #ff0000; border-color: #ff0000; }
+        .social-btn.fb:hover { background: #1877f2; border-color: #1877f2; }
+        .social-btn.in:hover { background: #e1306c; border-color: #e1306c; }
+        .social-btn.x:hover { background: #000; border-color: #fff; }
+        .social-btn.mail:hover { background: var(--secondary); border-color: var(--secondary); }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #020617;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                background: #0a0f1c;
+                flex-direction: column;
+                padding: 20px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+            }
+            .nav-links.active { display: flex; }
+            .menu-toggle { display: block; }
+            
+            .hero-banner { aspect-ratio: auto; height: 500px; }
+            
+            .founder-container { flex-direction: column; text-align: center; }
+            .founder-img { width: 100%; max-width: 300px; height: auto; aspect-ratio: 3/4;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="nav-brand">NEXIFY</a>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-wrapper" id="home">
+        <header class="hero-banner">
+            <div class="hero-content">
+                <img src="nexify_logo.png" alt="Nexify Logo" class="main-logo">
+                <h1 class="hero-title">NEXIFY</h1>
+                <p class="tagline">Where Learning Meets Innovation</p>
+                <a href="#about" class="cta-btn">Build the Future <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </header>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="reveal">
+        <div class="section-header">
+            <h2>Our Vision & Mission</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="glass-card">
+                <i class="fas fa-eye"></i>
+                <h3>Our Vision</h3>
+                <p>To make advanced technology accessible, practical, and useful for everyone. We believe in technology that empowers.</p>
+            </div>
+            <div class="glass-card">
+                <i class="fas fa-bullseye"></i>
+                <h3>Our Mission</h3>
+                <p>Developing scalable, user-friendly digital products by combining education, AI, and modern software engineering.</p>
+            </div>
+            <div class="glass-card">
+                <i class="fas fa-cogs"></i>
+                <h3>What We Do</h3>
+                <p>Building education platforms, AI tools, and practical tech solutions to solve real-world problems through hands-on experiences.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="reveal">
+        <div class="founder-container">
+            <div class="founder-img-wrapper">
+                <img src="ayushman.jpg" alt="Ayushman Singh" class="founder-img">
+            </div>
+            <div class="founder-info">
+                <h3>Ayushman Singh</h3>
+                <span class="founder-role">Founder & CEO</span>
+                <p>Ayushman Singh is passionate about building technology-driven platforms that combine education, innovation, and real-world impact.</p>
+                <p>His vision is to create meaningful systems that help individuals learn, build, and grow with technology, moving beyond just certificates to real skills.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="reveal">
+        <div class="section-header">
+            <h2>Featured Project</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="glass-card project-card">
+            <div>
+                <img src="gyansetu_logo.png" alt="GyanSetu" class="project-logo">
+            </div>
+            <div>
+                <h3 style="color: var(--accent); font-size: 2rem; margin-bottom: 10px;">GyanSetu</h3>
+                <span style="background: var(--accent); color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">COMING SOON</span>
+                <p style="margin-top: 15px;">An AI-powered learning and project-based education platform. It provides clear concepts, structured notes, and practical explanations to build strong fundamentals, focusing on smart study methods rather than rote learning.</p>
+                
+                <div style="margin-top: 20px;">
+                    <a href="https://youtube.com/@gyansetu_officials?si=pS2VcRPOyygfjtdl" target="_blank" style="color: var(--accent); margin-right: 15px;"><i class="fab fa-youtube"></i> Visit Channel</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="reveal">
+        <div class="section-header">
+            <h2>Get in Touch</h2>
+            <p>Connect with us on social media or drop us an email.</p>
+            <div class="divider"></div>
+        </div>
+
+        <div class="social-grid">
+            <a href="mailto:nexifybusnessid@gmail.com" class="social-btn mail">
+                <i class="fas fa-envelope"></i> Email Us
+            </a>
+            <a href="https://youtube.com/@nexify_official_studio?si=uEy4_pg9_wi7nYrY" target="_blank" class="social-btn yt">
+                <i class="fab fa-youtube"></i> YouTube
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61586274988817&mibextid=ZbWKwL" target="_blank" class="social-btn fb">
+                <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a href="https://www.instagram.com/nexify_official_studios?igsh=MTN3dml0eG11OW1yNQ==" target="_blank" class="social-btn in">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+            <a href="https://x.com/Nexify_studios" target="_blank" class="social-btn x">
+                <i class="fab fa-twitter"></i> X (Twitter)
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Nexify Studios. All Rights Reserved.</p>
+        <p style="font-size: 0.8rem; opacity: 0.7;">Technology for Real-World Impact.</p>
+    </footer>
+
+    <!-- Scripts for Animation & Interaction -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Scroll Animation (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealOnScroll.observe(el));
+    </script>
+</body>
+</html>
